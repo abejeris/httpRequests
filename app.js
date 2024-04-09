@@ -104,11 +104,65 @@
 //-------------------------------------------------------------------------
 // using AXIOS instead - best option (allegedly)
 
-axios
-	.get('https://swapi.dev/api/planetss')
-	.then((res) => {
-		console.log(res.data.results);
-	})
+// axios
+// 	.get('https://swapi.dev/api/planets')
+// 	.then((res) => {
+// 		console.log(res.data.results);
+// 	})
+// 	.catch((err) => {
+// 		console.log(err);
+// 	});
+
+// ---------------------------------------------------------------------------
+// Sequential Axios requests
+
+// axios
+// 	.get('https://swapi.dev/api/planets')
+// 	.then(({ data }) => {
+// 		console.log(data);
+// 		for (let planet of data.results) {
+// 			console.log(planet.name);
+// 		}
+// 		return axios.get(data.next);
+// 	})
+// 	.then(({ data }) => {
+// 		console.log(data);
+// 		for (let planet of data.results) {
+// 			console.log(planet.name);
+// 		}
+// 		return axios.get(data.next);
+// 	})
+// 	.then(({ data }) => {
+// 		console.log(data);
+// 		for (let planet of data.results) {
+// 			console.log(planet.name);
+// 		}
+// 		return axios.get(data.next);
+// 	})
+// 	.catch((err) => {
+// 		console.log(err);
+// 	});
+
+//-------------------------------------------------------------------------------
+// refactoring axios requests
+
+const fetchNextPlanets = (url = 'https://swapi.dev/api/planets') => {
+	return axios.get(url);
+};
+
+const printPlanets = ({ data }) => {
+	for (let planet of data.results) {
+		console.log(planet.name);
+	}
+	return Promise.resolve(data.next);
+};
+
+fetchNextPlanets()
+	.then(printPlanets)
+	.then(fetchNextPlanets)
+	.then(printPlanets)
+	.then(fetchNextPlanets)
+	.then(printPlanets)
 	.catch((err) => {
 		console.log(err);
 	});
