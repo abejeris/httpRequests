@@ -100,3 +100,15 @@
 // 	.catch((err) => {
 // 		console.log(err);
 // 	});
+
+//-------------------------------------------------------------------------
+// using AXIOS instead - best option (allegedly)
+
+axios
+	.get('https://swapi.dev/api/planetss')
+	.then((res) => {
+		console.log(res.data.results);
+	})
+	.catch((err) => {
+		console.log(err);
+	});
